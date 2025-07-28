@@ -5,6 +5,31 @@ export function cleanInput(str) {
         .split(/\s+/)
         .filter((s) => s.length > 0);
 }
+export function commandExit() {
+    console.log("Closing the Pokedex... Goodbye!");
+    process.exit(0);
+}
+export function commandHelp(commands) {
+    console.log("Welcome to the Pokedex!");
+    console.log("Usage:\n");
+    Object.values(commands).forEach((cmd) => {
+        console.log(`${cmd.name}: ${cmd.description}`);
+    });
+}
+export function getCommands() {
+    return {
+        help: {
+            name: "help",
+            description: "Displays a help message",
+            callback: commandHelp,
+        },
+        exit: {
+            name: "exit",
+            description: "Exit the pokedex",
+            callback: commandExit,
+        },
+    };
+}
 export function startREPL() {
     // create interface for reading input
     const rl = createInterface({
@@ -23,15 +48,19 @@ export function startREPL() {
             rl.prompt();
             return;
         }
-        switch (args[0]) {
-            case "exit":
-                rl.close();
-                break;
-            case "help":
-                console.log("Available commands: exit, help");
-                break;
-            default:
-                console.log(`Your command was: ${args[0]}`);
+        const commands = getCommands();
+        const command = commands[args[0]];
+        if (command) {
+            try {
+                command.callback(commands);
+            }
+            catch (error) {
+                console.error(`Error executing command '${args[0]}':`, error);
+            }
+        }
+        else {
+            console.log(`Unknown command: ${args[0]}`);
+            commands.help.callback(commands);
         }
         // display prompt again
         rl.prompt();
