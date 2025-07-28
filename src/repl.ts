@@ -1,44 +1,11 @@
 import { createInterface } from "readline";
+import { getCommands } from "./commands/command.js";
 
 export function cleanInput(str: string): string[] {
   return str
     .toLowerCase()
     .split(/\s+/)
     .filter((s) => s.length > 0);
-}
-
-export function commandExit() {
-  console.log("Closing the Pokedex... Goodbye!");
-  process.exit(0);
-}
-
-export function commandHelp(commands: Record<string, CLICommand>) {
-  console.log("Welcome to the Pokedex!");
-  console.log("Usage:\n");
-  Object.values(commands).forEach((cmd) => {
-    console.log(`${cmd.name}: ${cmd.description}`);
-  });
-}
-
-export type CLICommand = {
-  name: string;
-  description: string;
-  callback: (commands: Record<string, CLICommand>) => void;
-};
-
-export function getCommands(): Record<string, CLICommand> {
-  return {
-    help: {
-      name: "help",
-      description: "Displays a help message",
-      callback: commandHelp,
-    },
-    exit: {
-      name: "exit",
-      description: "Exit the pokedex",
-      callback: commandExit,
-    },
-  };
 }
 
 export function startREPL() {
