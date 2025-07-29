@@ -16,3 +16,20 @@ export async function commandMap(state: State) {
   state.nextLocationsURL = locations.next;
   state.prevLocationsURL = locations.previous;
 }
+
+export async function commandMapB(state: State) {
+  const locations = await state.pokeAPI.fetchLocations(state.prevLocationsURL);
+  if (!locations) {
+    console.log('No previous locations found.');
+    return;
+  }
+
+  // display locations
+  for (const location of locations.results) {
+    console.log(location.name);
+  }
+
+  // update state with new URLs
+  state.nextLocationsURL = locations.next;
+  state.prevLocationsURL = locations.previous;
+}
