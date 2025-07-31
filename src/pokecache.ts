@@ -8,8 +8,7 @@ export class Cache {
   #reapIntervalId: NodeJS.Timeout | undefined = undefined;
   #interval: number;
 
-  constructor(interval: number = 60000) {
-    // Default to 1 minute
+  constructor(interval: number) {
     this.#interval = interval;
     this.#startReapLoop();
   }
@@ -18,18 +17,14 @@ export class Cache {
     this.#cache.set(key, { createdAt: Date.now(), val });
   }
 
-  get<T>(key: string): CacheEntry<T> | undefined {
-    return this.#cache.get(key) as CacheEntry<T> | undefined;
-  }
-
-  clear() {
-    this.#cache.clear();
+  get<T>(key: string): T | undefined {
+    return this.#cache.get(key)?.val;
   }
 
   #reap() {
     const now = Date.now();
     for (const [key, entry] of this.#cache.entries()) {
-      if (now - entry.createdAt > this.#interval) {
+      if (now - entry.createdAt >= this.#interval) {
         this.#cache.delete(key);
       }
     }

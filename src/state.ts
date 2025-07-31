@@ -16,7 +16,7 @@ export type CLICommand = {
   callback: (state: State) => Promise<void>;
 };
 
-export function initState(): State {
+export function initState(cacheInterval: number): State {
   // create interface for reading input
   const rl = createInterface({
     input: process.stdin,
@@ -25,7 +25,7 @@ export function initState(): State {
   });
 
   // create PokeAPI instance
-  const pokeAPI = new PokeAPI();
+  const pokeAPI = new PokeAPI(cacheInterval);
 
   // create commands object
   const commands = getCommands();
