@@ -29,6 +29,4 @@ export async function commandCatch(
   } catch (error) {
     console.error(`Failed to catch ${pokemonName}:`, error);
   }
-
-  return Promise.resolve();
 }
