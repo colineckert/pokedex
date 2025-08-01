@@ -1,4 +1,3 @@
-import { getCommands } from './commands/command.js';
 import type { State } from './state.js';
 
 export function cleanInput(str: string): string[] {
@@ -26,7 +25,8 @@ export function startREPL(state: State): void {
     const command = state.commands[args[0]];
     if (command) {
       try {
-        await command.callback(state);
+        // execute command callback
+        await command.callback(state, ...args.slice(1));
       } catch (error) {
         console.error(`Error executing command '${args[0]}':`, error);
       }

@@ -1,3 +1,4 @@
+import { L } from 'vitest/dist/chunks/environment.d.cL3nLXbE.js';
 import { Cache } from './pokecache.js';
 export class PokeAPI {
   private static readonly baseURL = 'https://pokeapi.co/api/v2';
@@ -19,13 +20,14 @@ export class PokeAPI {
       throw new Error('Failed to fetch locations');
     }
 
-    this.cache.add(url, response);
-    return response.json();
+    const data = await response.json();
+    this.cache.add(url, data);
+    return data;
   }
 
-  async fetchLocation(locationName: string): Promise<Location> {
-    const url = `${PokeAPI.baseURL}/location/${locationName}`;
-    const cachedResponse = this.cache.get<Location>(url);
+  async fetchLocation(locationName: string): Promise<LocationResponse> {
+    const url = `${PokeAPI.baseURL}/location-area/${locationName}`;
+    const cachedResponse = this.cache.get<LocationResponse>(url);
     if (cachedResponse) {
       return cachedResponse;
     }
@@ -35,8 +37,9 @@ export class PokeAPI {
       throw new Error(`Location not found: ${locationName}`);
     }
 
-    this.cache.add(url, response);
-    return response.json();
+    const data = await response.json();
+    this.cache.add(url, data);
+    return data;
   }
 }
 
@@ -45,6 +48,12 @@ export type ShallowLocations = {
   next?: string;
   previous?: string;
   results: Location[];
+};
+
+export type LocationResponse = {
+  id: number;
+  location: Location;
+  pokemon_encounters: { pokemon: { name: string } }[];
 };
 
 export type Location = {
