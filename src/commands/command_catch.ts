@@ -19,15 +19,15 @@ export async function commandCatch(
       return Promise.resolve();
     }
 
-    const chance = Math.floor(Math.random() * pokemon.base_experience);
-    if (chance > 40) {
+    // Higher base_experience means harder to catch
+    const catchProbability = Math.max(0.2, 1 - pokemon.base_experience / 300); // never less than 20% chance
+    if (Math.random() > catchProbability) {
       console.log(`${pokemon.name} escaped!`);
       return;
     }
 
     console.log(`${pokemon.name} was caught!`);
-    console.log('You may now inspect it with the inspect command.');
-    state.Pokedex[pokemon.name] = pokemon;
+    state.Pokedex[name] = pokemon;
   } catch (error) {
     console.error(`Failed to fetch ${name}:`, error);
   }
