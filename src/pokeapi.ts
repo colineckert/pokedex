@@ -70,7 +70,9 @@ export type ShallowLocations = {
 export type LocationResponse = {
   id: number;
   location: Location;
-  pokemon_encounters: { pokemon: { name: string } }[];
+  pokemon_encounters: {
+    pokemon: { name: string };
+  }[];
 };
 
 export type Location = {
@@ -82,4 +84,13 @@ export type Pokemon = {
   id: number;
   name: string;
   base_experience: number;
+  height: number;
+  weight: number;
+  types: {
+    type: { name: string };
+  }[];
+  stats: {
+    base_stat: number;
+    stat: { name: string };
+  }[];
 };

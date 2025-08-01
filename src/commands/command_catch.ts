@@ -16,7 +16,7 @@ export async function commandCatch(
     const pokemon = await state.pokeAPI.fetchPokemon(name);
     if (!pokemon) {
       console.error(`Pokémon ${name} not found.`);
-      return Promise.resolve();
+      return;
     }
 
     // Higher base_experience means harder to catch
