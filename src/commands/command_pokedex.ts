@@ -8,6 +8,7 @@ export async function commandPokedex(state: State): Promise<void> {
 
   console.log('Your Pokedex:');
   for (const name in state.Pokedex) {
-    console.log(`- ${name}`);
+    const pokemon = state.Pokedex[name];
+    console.log(`- ${pokemon.name}`);
   }
 }
